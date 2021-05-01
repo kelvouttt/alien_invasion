@@ -14,9 +14,7 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()
         # Setting the width and height (0, 0) and use pygame.FULLSCREEN to get the max width, height
-        self.screen = pygame.display.set_mode(
-            (0, 0), pygame.FULLSCREEN 
-        )
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         # Getting the width and height using .get_rect() on the screen and assign it to variable in settings
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
@@ -34,30 +32,30 @@ class AlienInvasion:
             self.ship.update()
             self.bullets.update()
             self._update_screen()
-            
+
             # Get rid of bullets that have dissapeared
             for bullet in self.bullets.copy():
                 if bullet.rect.bottom < 0:
                     self.bullets.remove(bullet)
-           
+
     def _check_events(self):
         # Respond to keypresses and mouse events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            # Key press trigger to move ship right    
+            # Key press trigger to move ship right
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-            # Detecting whether keypress is released 
+            # Detecting whether keypress is released
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-    
+
     def _check_keydown_events(self, event):
         # Respond to the keypresses
         if event.key == pygame.K_RIGHT:
-            self.ship.moving_right=True
+            self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
-            self.ship.moving_left=True
+            self.ship.moving_left = True
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
         elif event.key == pygame.K_SPACE:
@@ -65,15 +63,14 @@ class AlienInvasion:
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
-            self.ship.moving_right=False
+            self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
-            self.ship.moving_left=False
-            
+            self.ship.moving_left = False
+
     def _fire_bullet(self):
         # Create a new bullet and add it to the bullets group
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
-        
 
     def _update_screen(self):
         # Update image on scree, and flip to new screen
@@ -90,5 +87,3 @@ if __name__ == "__main__":
     # Make the game instance, and run the game
     ai = AlienInvasion()
     ai.run_game()
-
-
