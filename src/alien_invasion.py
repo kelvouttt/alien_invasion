@@ -99,9 +99,7 @@ class AlienInvasion:
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.screen_width - (2 * alien_width)
-        avaiable_space_y = self.settings.screen_height - (2 * alien_height)
         number_aliens_x = available_space_x // (2 * alien_width)
-        number_aliens_y = available_space_y // (2 * alien_height)
         # Create row of aliens
         for number_aliens in range(number_aliens_x):
             self._create_alien(number_aliens)
