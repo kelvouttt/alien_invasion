@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -13,7 +14,7 @@ class AlienInvasion:
         # Initializing the game, and create game resources
         pygame.init()
         self.settings = Settings()
-        # Setting the width and height (0, 0) and use pygame.FULLSCREEN to get the max width, height
+        # Setting the width and height of the surface and use pygame.FULLSCREEN to get the max width, height
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         # Getting the width and height using .get_rect() on the screen and assign it to variable in settings
         self.settings.screen_width = self.screen.get_rect().width
@@ -23,6 +24,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+        
+        self._create_fleet()
 
     def run_game(self):
         # Starting the main loop for the game
@@ -75,6 +79,7 @@ class AlienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         # Make the most recently drawn screen visible
         pygame.display.flip()
         
@@ -87,6 +92,31 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom < 0:
                 self.bullets.remove(bullet)
+                
+    def _create_fleet(self):
+        # Create the fleets of aliens
+        # Spacing between each alien is equal to one alien width
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        avaiable_space_y = self.settings.screen_height - (2 * alien_height)
+        number_aliens_x = available_space_x // (2 * alien_width)
+        number_aliens_y = available_space_y // (2 * alien_height)
+        # Create row of aliens
+        for number_aliens in range(number_aliens_x):
+            self._create_alien(number_aliens)
+
+    def _create_alien(self, number_aliens):
+        # Create an alien and place it in the row
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        alien.x = alien_width + 2 * alien_width * number_aliens
+        alien.rect.x = alien.x
+        self.aliens.add(alien)
+            
+        
+        
+        
 
 
 
